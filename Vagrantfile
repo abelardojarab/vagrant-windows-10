@@ -21,7 +21,7 @@ Vagrant.configure("2") do |config|
     config.vm.define node[:hostname] do |node_config|
       node_config.ssh.username = 'vagrant'
       node_config.ssh.password = 'vagrant'
-      node_config.ssh.insert_key = true
+      node_config.ssh.insert_key = false
 
       node_config.vm.box = node[:box]
       node_config.vm.hostname = node[:hostname] + '.' + domain
