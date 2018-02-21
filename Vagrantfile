@@ -11,9 +11,9 @@ cpus = 2
 ram = 1024
 
 node_components = [
-  {:hostname => 'vm0',  :ip => '172.16.32.10', :box => box, :fwdhost => 2222, :fwdguest => 22, :cpus => cpus, :ram => ram},
-  # {:hostname => 'vm1', :ip => '172.16.32.11', :box => box},
-  # {:hostname => 'vm2', :ip => '172.16.32.12', :box => box},
+  {:hostname => 'vm0',  :ip => '192.168.122.10', :box => box, :fwdhost => 4422, :fwdguest => 22, :cpus => cpus, :ram => ram},
+  # {:hostname => 'vm1', :ip => '192.168.122.11', :box => box},
+  # {:hostname => 'vm2', :ip => '192.168.122.12', :box => box},
 ]
 
 Vagrant.configure("2") do |config|
@@ -27,10 +27,12 @@ Vagrant.configure("2") do |config|
       node_config.vm.hostname = node[:hostname] + '.' + domain
 
       node_config.vm.network :private_network,
-                             ip: node[:ip],
                              :autostart => true,
+                             ip: node[:ip],
+                             libvirt__network_name: "default",
                              libvirt__forward_mode: 'nat',
                              libvirt__dhcp_enabled: true
+
       if node[:fwdhost]
         node_config.vm.network :forwarded_port, guest: node[:fwdguest], host: node[:fwdhost]
       end
