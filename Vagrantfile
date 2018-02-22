@@ -19,13 +19,19 @@ node_components = [
 Vagrant.configure("2") do |config|
   node_components.each do |node|
     config.vm.define node[:hostname] do |node_config|
+      node_config.vm.boot_timeout = 500
+
       node_config.ssh.username = 'vagrant'
       node_config.ssh.password = 'vagrant'
       node_config.ssh.insert_key = false
+      # If true, then any SSH connections made will enable agent forwarding.
+      # Default value: false
+      node_config.ssh.forward_agent = true
 
       node_config.vm.box = node[:box]
-      node_config.vm.hostname = node[:hostname] + '.' + domain
-
+      node_config.vm.hostname = node[:hostname]
+      node_config.vm.communicator = "winrm"
+      node_config.vm.guest = :windows
       node_config.vm.network :private_network,
                              :autostart => true,
                              ip: node[:ip],
@@ -37,6 +43,7 @@ Vagrant.configure("2") do |config|
         node_config.vm.network :forwarded_port, guest: node[:fwdguest], host: node[:fwdhost]
       end
 
+      node_config.vm.synced_folder ".", "/vagrant"
 
       memory = node[:ram] ? node[:ram] : 256;
       cpus = node[:cpus] ? node[:cpus] : 4;
