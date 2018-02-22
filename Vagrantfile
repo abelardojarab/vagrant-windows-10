@@ -39,8 +39,16 @@ Vagrant.configure("2") do |config|
                              libvirt__forward_mode: 'nat',
                              libvirt__dhcp_enabled: true
 
+      # Admin user name and password
+      node_config.winrm.username = "vagrant"
+      node_config.winrm.password = "vagrant"
+
       if node[:fwdhost]
         node_config.vm.network :forwarded_port, guest: node[:fwdguest], host: node[:fwdhost]
+
+        # Port forward WinRM and RDP (changed values to NOT conflict with host)
+        node_config.vm.network :forwarded_port, guest: 3389, host: 3391
+        node_config.vm.network :forwarded_port, guest: 5985, host: 5987, id: "winrm", auto_correct: true
       end
 
       node_config.vm.synced_folder ".", "/vagrant"
