@@ -6,12 +6,14 @@
 # alternatively, you can just create the vm's one at a time manually...
 
 domain = 'local'
-box = 'peru/windows-10-enterprise-x64-eval'
+box = 'peru/windows-server-2019-standard-x64-eval'  
+box_version = "20211006.01"
+
 cpus = 2
 ram = 1024
 
 node_components = [
-  {:hostname => 'vm0',  :ip => '192.168.122.10', :box => box, :fwdhost => 4422, :fwdguest => 22, :cpus => cpus, :ram => ram},
+  {:hostname => 'vm0',  :ip => '192.168.122.10', :box => box, :box_version => box_version, :fwdhost => 4422, :fwdguest => 22, :cpus => cpus, :ram => ram},
   # {:hostname => 'vm1', :ip => '192.168.122.11', :box => box},
   # {:hostname => 'vm2', :ip => '192.168.122.12', :box => box},
 ]
@@ -29,6 +31,7 @@ Vagrant.configure("2") do |config|
       node_config.ssh.forward_agent = true
 
       node_config.vm.box = node[:box]
+      node_config.vm.box_version = node[:box_version]
       node_config.vm.hostname = node[:hostname]
       node_config.vm.communicator = "winrm"
       node_config.vm.guest = :windows
