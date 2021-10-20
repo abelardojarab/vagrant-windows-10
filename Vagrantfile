@@ -6,11 +6,11 @@
 # alternatively, you can just create the vm's one at a time manually...
 
 domain = 'local'
-box = 'peru/windows-server-2019-standard-x64-eval'  
-box_version = "20211006.01"
+box = 'peru/windows-10-enterprise-x64-eval'
+box_version = "20211016.01"
 
-cpus = 2
-ram = 1024
+cpus = 4
+ram = 16024
 
 node_components = [
   {:hostname => 'vm0',  :ip => '192.168.122.10', :box => box, :box_version => box_version, :fwdhost => 4422, :fwdguest => 22, :cpus => cpus, :ram => ram},
